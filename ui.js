@@ -1,0 +1,26 @@
+(()=>{
+ const $=id=>document.getElementById(id);
+ const data=[
+ {title:'ビッグファイブ性格診断',short:'Big5診断',tag:'自分を知る',desc:'10問から、自分の性格の傾向を知る。無料・登録不要です。',url:'https://bigfive.jr-genius.jp/start.html'},
+ {title:'かんじモンRPG',short:'かんじモンRPG',tag:'漢字と冒険する',desc:'読みクイズで戦って、仲間を集めるブラウザゲーム。',url:'https://kanjimon.jr-genius.jp/play/'},
+ {title:'記憶の宮殿',short:'記憶の宮殿',tag:'覚え方を試す',desc:'覚えたいことを頭の中の場所と結びつける。記憶術の体験へ。',url:'https://kioku.jr-genius.jp/'},
+ {title:'性格物語',short:'性格物語',tag:'構想・準備中',desc:'配役する → Big5の組合せで自動進行 → 配役を変えて見比べる。現在は準備中です。',url:null}
+ ];
+ const storageKey='junior-genius-corridor-return-v1';let restored=null;try{restored=JSON.parse(sessionStorage.getItem(storageKey))}catch{}
+ function save(){try{sessionStorage.setItem(storageKey,JSON.stringify({pose:api?.pose(),list:document.body.classList.contains('list-mode'),reduced}))}catch{}}
+ addEventListener('pagehide',save);
+ let api=null,selection=-1,failed=false;let reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function setMotion(){document.body.classList.toggle('reduced',reduced);$('motion').setAttribute('aria-pressed',String(reduced));$('motion').textContent=reduced?'動き抑制：ON':'動きを抑える';api?.setReduced(reduced)}
+ function list(open){document.body.classList.toggle('list-mode',open);$('works').hidden=!open;$('list-toggle').setAttribute('aria-expanded',String(open));$('list-toggle').textContent=open?'回廊を見る':'作品一覧';api?.setVisible(!open);if(open)$('works').scrollIntoView({behavior:'instant',block:'start'});else{scrollTo({top:0,behavior:'instant'});api?.resize()}}
+ function select(i){if(data[i]?.url){save();location.assign(data[i].url);return}document.body.classList.add('viewing-exhibit');selection=i;const d=data[i];$('detail').hidden=false;$('detail-title').textContent=d.title;$('detail-description').textContent=d.desc;$('detail-kicker').textContent=d.tag;$('enter').hidden=!d.url;$('not-ready').hidden=!!d.url;if(d.url)$('enter').href=d.url;else $('enter').removeAttribute('href');document.querySelectorAll('[data-door]').forEach(b=>b.classList.toggle('active',+b.dataset.door===i));document.querySelectorAll('.portal-label').forEach((b,j)=>b.classList.toggle('selected',j===i));$('hint').textContent='性格物語は準備中です';api?.focus(i)}
+ function back(){if(selection<0)return;document.body.classList.remove('viewing-exhibit');selection=-1;$('detail').hidden=true;document.querySelectorAll('.active,.selected').forEach(b=>b.classList.remove('active','selected'));$('hint').textContent='ドラッグで見回す · 矢印を長押しで歩く';api?.reset()}
+ function fallback(reason){if(failed)return;failed=true;document.body.classList.add('fallback-mode');$('loading').hidden=true;$('fallback').hidden=false;$('works').hidden=false;$('hint').textContent='通常一覧から作品を選べます';window.roomStatus={state:'fallback',reason};api?.dispose()}
+ data.forEach((d,i)=>{const b=document.createElement('button');b.className='portal-label';b.dataset.door=String(i);b.setAttribute('aria-label',d.short+(d.url?'を開く':'の準備状況を見る'));const title=document.createElement('strong');title.textContent=d.short;const sub=document.createElement('small');sub.textContent=d.tag+(d.url?' ↗':'');b.append(title,sub);b.onclick=()=>select(i);$('labels').append(b)});
+ document.querySelectorAll('.door-nav [data-door]').forEach(b=>b.onclick=()=>select(+b.dataset.door));$('back').onclick=back;$('motion').onclick=()=>{reduced=!reduced;setMotion()};$('list-toggle').onclick=()=>list(!document.body.classList.contains('list-mode'));$('list-close').onclick=()=>list(false);$('fallback-list').onclick=() =>list(true);$('loading-list').onclick=()=>list(true);$('skip-hall').onclick=()=>{back();api?.hall()};$('entrance').onclick=()=>{back();api?.entrance()};$('look-left').onclick=()=>api?.look(-.16);$('look-right').onclick=()=>api?.look(.16);
+ addEventListener('keydown',e=>{if(e.key==='Escape')back();if(document.activeElement===$('canvas')&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();api?.look(e.key==='ArrowLeft'?-.12:.12)}});
+ const media=matchMedia('(prefers-reduced-motion: reduce)');media.addEventListener('change',e=>{reduced=e.matches;setMotion()});setMotion();
+ window.roomUI={data,select,back,fallback,get reduced(){return reduced},get selection(){return selection}};
+ document.querySelectorAll('#works a').forEach(a=>{a.removeAttribute('target');const i=data.findIndex(d=>d.url===a.href);a.onclick=e=>{if(i>=0){e.preventDefault();select(i)}else save()}});
+ const timer=setTimeout(()=>fallback('initialization timeout'),18000);
+ import('./room.js').then(async m=>{api=await m.createRoom({canvas:$('canvas'),labels:[...document.querySelectorAll('.portal-label')],select,reduced,onError:fallback});if(failed){api.dispose();return}clearTimeout(timer);$('loading').hidden=true;window.roomStatus={state:'ready'};window.roomDebug=api.debug;if(restored){api.restore(restored.pose);if(restored.reduced!==undefined){reduced=restored.reduced;setMotion()}if(restored.list)list(true)}api.setVisible(!document.body.classList.contains('list-mode'))}).catch(e=>{clearTimeout(timer);fallback(String(e.message||'asset or renderer initialization failed'))});
+})();
