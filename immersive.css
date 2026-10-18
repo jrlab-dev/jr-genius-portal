@@ -1,0 +1,14 @@
+:root{--gallery-header:82px}#room{height:calc(100svh - var(--gallery-header));min-height:0;max-height:none}
+.gallery-ready:not(.auto-walking) .scene-title{display:none}
+.scene-dock{position:absolute;z-index:6;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));display:flex;gap:8px;pointer-events:none}
+.scene-dock button{pointer-events:auto;min-width:64px;min-height:44px;padding:10px 16px;background:#0b1728e8;border:1px solid #edc98a99;box-shadow:0 3px 16px #0008;color:#ffe3ae;font-size:13px}
+#movement-panel.controls{position:absolute;z-index:6;right:max(8px,env(safe-area-inset-right));bottom:calc(66px + env(safe-area-inset-bottom));width:min(420px,calc(100% - 16px));display:grid;grid-template-columns:repeat(6,minmax(44px,1fr));gap:4px;padding:8px;margin:0;background:#0b1728ed;border:1px solid #edc98a88;border-radius:8px;box-shadow:0 4px 20px #0008}
+#movement-panel .controls-help{grid-column:1/-1;text-align:center;font-size:11px;line-height:1.6;margin:0 0 4px;color:#f2dfbd}
+#movement-panel .look-controls,#movement-panel .travel-controls,#movement-panel .move-pad{display:contents}
+#movement-panel #hint,#movement-panel .door-nav,#movement-panel #skip-hall,#movement-panel #entrance{display:none}
+#movement-panel button{min-height:44px;min-width:44px;font-size:16px;padding:6px;touch-action:none}
+.auto-walking #movement-panel{display:none!important}.scene-caption{bottom:calc(68px + env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));right:12px;pointer-events:none;text-shadow:0 1px 4px #000;font-size:9px}.controls-open .scene-caption{visibility:hidden}
+.fallback-mode .scene-dock,.viewing-exhibit .scene-dock{display:none}.fallback-mode #room{height:360px}
+@media(max-width:650px){:root{--gallery-header:88px}.scene-title h1{font-size:30px}.scene-title p{padding:0 20px;line-height:1.6}}
+@media(orientation:landscape) and (max-height:550px){:root{--gallery-header:64px}header{height:64px}.brand{font-size:22px}.brand small{font-size:7px}.brand em{font-size:9px;margin-top:3px}.scene-title{top:8px}.scene-title span{display:none}.scene-title h1{font-size:24px;margin:3px}.scene-title p{margin:4px;font-size:11px}#movement-panel.controls{width:360px}.scene-caption{left:12px;right:auto;max-width:40%;bottom:14px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
