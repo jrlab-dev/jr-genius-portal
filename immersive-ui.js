@@ -2,7 +2,7 @@
 (()=>{
  const room=document.getElementById('room'),panel=document.querySelector('.controls');
  panel.id='movement-panel';room.append(panel);
- const help=document.createElement('p');help.className='controls-help';help.textContent='↶ ↷ で見回す · 矢印は長押しで歩く';panel.prepend(help);
+ const help=document.createElement('p');help.className='controls-help';help.textContent='景色を長押しで進む · ドラッグで見回す';panel.prepend(help);
  const dock=document.createElement('div');dock.className='scene-dock';
  const toggle=document.createElement('button');toggle.id='controls-toggle';toggle.textContent='操作';toggle.setAttribute('aria-controls',panel.id);toggle.setAttribute('aria-expanded','false');
  const skip=document.createElement('button');skip.id='tour-skip';skip.textContent='ホールへスキップ';skip.onclick=()=>document.getElementById('skip-hall').click();dock.append(skip,toggle);room.append(dock);

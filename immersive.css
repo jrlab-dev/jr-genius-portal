@@ -12,3 +12,7 @@
 @media(max-width:650px){:root{--gallery-header:88px}.scene-title h1{font-size:30px}.scene-title p{padding:0 20px;line-height:1.6}}
 @media(orientation:landscape) and (max-height:550px){:root{--gallery-header:64px}header{height:64px}.brand{font-size:22px}.brand small{font-size:7px}.brand em{font-size:9px;margin-top:3px}.scene-title{top:8px}.scene-title span{display:none}.scene-title h1{font-size:24px;margin:3px}.scene-title p{margin:4px;font-size:11px}#movement-panel.controls{width:360px}.scene-caption{left:12px;right:auto;max-width:40%;bottom:14px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+@media(max-width:650px){.portal-label{min-width:0;max-width:125px;padding:6px 8px}.portal-label strong{font-size:14px}.portal-label small{font-size:9px}}
+
+@media(orientation:landscape) and (max-height:550px){.portal-label{min-width:0;padding:5px 8px}.portal-label strong{font-size:14px}.portal-label small{font-size:9px}}
