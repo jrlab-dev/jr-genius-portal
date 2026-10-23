@@ -5,7 +5,8 @@
  {title:'かんじモンRPG',short:'かんじモン',tag:'漢字と冒険する',desc:'読みクイズで戦って、仲間を集めるブラウザゲーム。',url:'https://kanjimon.jr-genius.jp/play/'},
  {title:'記憶の宮殿',short:'記憶の宮殿',tag:'覚え方を試す',desc:'覚えたいことを頭の中の場所と結びつける。記憶術の体験へ。',url:'https://kioku.jr-genius.jp/'},
  {title:'性格物語',short:'性格物語',tag:'構想・準備中',desc:'配役する → Big5の組合せで自動進行 → 配役を変えて見比べる。現在は準備中です。',url:null},
- {title:'電車を作ろう',short:'電車を作ろう',tag:'電車と街をつくる',desc:'自分だけの電車で、小さな街へ。',url:'https://junior-g-rail.j-kato.chatgpt.site/'}
+ {title:'電車を作ろう',short:'電車を作ろう',tag:'電車と街をつくる',desc:'自分だけの電車で、小さな街へ。',url:'https://junior-g-rail.j-kato.chatgpt.site/'},
+ {title:'ふわポコ（ぽこ・ふわ）',short:'ふわポコ',tag:'声まねとお世話',desc:'ぽこ・ふわと、声まねやお世話で遊ぶペットゲーム。',url:'https://pokofuwa.jr-genius.jp/'}
  ];
  const storageKey='junior-genius-corridor-return-v1';let restored=null;try{restored=JSON.parse(sessionStorage.getItem(storageKey))}catch{}
  function save(){api?.cancelTour();try{sessionStorage.setItem(storageKey,JSON.stringify({pose:api?.pose(),list:document.body.classList.contains('list-mode'),reduced}))}catch{}}
@@ -24,5 +25,5 @@
  window.roomUI={data,select,back,fallback,get reduced(){return reduced},get selection(){return selection}};
  document.querySelectorAll('#works a').forEach(a=>{a.removeAttribute('target');const i=data.findIndex(d=>d.url===a.href);a.onclick=e=>{if(i>=0){e.preventDefault();select(i)}else save()}});
  const timer=setTimeout(()=>fallback('initialization timeout'),18000);
- import('./room.js?v=gallery-4').then(async m=>{api=await m.createRoom({canvas:$('canvas'),labels:[...document.querySelectorAll('.portal-label')],select,reduced,onError:fallback,onTourChange:tourChange});if(failed){api.dispose();return}clearTimeout(timer);$('loading').hidden=true;window.roomStatus={state:'ready'};window.roomDebug=api.debug;if(restored){api.restore(restored.pose);tourChange(false);if(restored.reduced!==undefined){reduced=restored.reduced;setMotion()}if(restored.list)list(true)}else{api.startTour()}window.roomStatus.readyMs=Math.round(performance.now());api.setVisible(!document.body.classList.contains('list-mode'))}).catch(e=>{clearTimeout(timer);fallback(String(e.message||'asset or renderer initialization failed'))});
+ import('./room.js?v=gallery-5').then(async m=>{api=await m.createRoom({canvas:$('canvas'),labels:[...document.querySelectorAll('.portal-label')],select,reduced,onError:fallback,onTourChange:tourChange});if(failed){api.dispose();return}clearTimeout(timer);$('loading').hidden=true;window.roomStatus={state:'ready'};window.roomDebug=api.debug;if(restored){api.restore(restored.pose);tourChange(false);if(restored.reduced!==undefined){reduced=restored.reduced;setMotion()}if(restored.list)list(true)}else{api.startTour()}window.roomStatus.readyMs=Math.round(performance.now());api.setVisible(!document.body.classList.contains('list-mode'))}).catch(e=>{clearTimeout(timer);fallback(String(e.message||'asset or renderer initialization failed'))});
 })();
